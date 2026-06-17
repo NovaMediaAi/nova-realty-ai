@@ -41,5 +41,10 @@ run_server.sh
 # API docs (not part of the project)
 uploadpostdocs.txt
 
-# Claude
+# Claude / Superpowers internal files
 CLAUDE.md
+.superpowers/
+
+# Remotion runtime audio (generated per-job)
+video/public/audio/
+video/public/generated/
