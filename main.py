@@ -18,7 +18,7 @@ from video_generator import generate_video
 from instagram_generator import generate_instagram_post
 from story_generator import generate_instagram_story
 from carousel_generator import generate_carousel
-from music_generator import generate_music, init_suno_key
+from music_generator import generate_music
 from voiceover_generator import generate_voiceover_script, generate_voiceover_script_scenes, generate_voiceover_audio
 from email_generator import generate_email_html
 from template_settings import load_settings, save_settings, DEFAULT_SETTINGS, ASSETS_DIR
@@ -34,8 +34,6 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 app.mount("/generated", StaticFiles(directory=str(GENERATED_DIR)), name="generated")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
-# Initialize Suno API key
-init_suno_key(SUNO_API_KEY)
 
 # In-memory video task tracker
 _video_tasks: dict[str, dict] = {}
@@ -58,19 +56,19 @@ async def _run_video_task(job_id: str, property_data: dict, photo_paths: list[st
 
     _set_status("generating_music")
 
-    # Step 1: Generate background music via Suno API
+    # Step 1: Generate background music via ElevenLabs Sound Effects
     music_url = ""
-    if SUNO_API_KEY:
+    from config import ELEVENLABS_API_KEY
+    if ELEVENLABS_API_KEY:
         try:
             music_style = settings["music"]["style"]
-            negative_tags = settings["music"]["negative_tags"]
-            music_result = await generate_music(
-                style=music_style,
-                negative_tags=negative_tags,
-            )
+            music_result = await generate_music(style=music_style)
             if music_result["status"] == "ready":
-                music_url = music_result["audio_url"]
-                print(f"[{job_id}] Music ready: {music_url[:60]}...")
+                # Save audio bytes to disk, pass local path to video renderer
+                music_path = job_dir / "background_music.mp3"
+                music_path.write_bytes(music_result["audio_bytes"])
+                music_url = str(music_path)
+                print(f"[{job_id}] Music ready: {music_url}")
             else:
                 print(f"[{job_id}] Music failed: {music_result}")
         except Exception as e:

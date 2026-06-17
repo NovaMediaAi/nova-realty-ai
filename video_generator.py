@@ -106,7 +106,11 @@ async def generate_video(
         }
 
         if music_url:
-            props["musicUrl"] = music_url
+            if music_url.startswith("http"):
+                props["musicUrl"] = music_url
+            elif Path(music_url).exists():
+                _copy_to_remotion_public(music_url, "audio/background_music.mp3")
+                props["musicUrl"] = _local_path_to_url(music_url)
 
         # Inject logo URL if available — copy to Remotion public/ for reliable loading
         if branding and branding.get("logo_path"):
