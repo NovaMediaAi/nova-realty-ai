@@ -147,21 +147,40 @@ def parse_colors(color_overrides: dict = None) -> tuple:
 
 def render_logo(canvas: Image.Image, branding: dict, x_right: int = 40,
                 y: int = 35, max_w: int = 200, max_h: int = 80) -> Image.Image:
-    """Render logo on top-right corner with white backing. Returns updated canvas."""
-    if not branding or not branding.get("logo_path"):
-        return canvas
-    try:
-        logo_full = GENERATED_DIR / branding["logo_path"]
-        if not logo_full.exists():
-            return canvas
-        logo = Image.open(str(logo_full)).convert("RGBA")
-        ratio = min(max_w / logo.width, max_h / logo.height)
-        new_size = (int(logo.width * ratio), int(logo.height * ratio))
-        logo = logo.resize(new_size, Image.LANCZOS)
-        lx = canvas.width - new_size[0] - x_right
-        canvas.paste(logo, (lx, y), logo)
-    except Exception:
-        pass
+    """Render logo on top-right corner with white backing. Returns updated canvas.
+
+    If no logo file is available, draws a Navy (#0A1628) box with Gold (#C9A84C)
+    'NRA' monogram text as a placeholder.
+    """
+    logo_placed = False
+    if branding and branding.get("logo_path"):
+        try:
+            logo_full = GENERATED_DIR / branding["logo_path"]
+            if logo_full.exists():
+                logo = Image.open(str(logo_full)).convert("RGBA")
+                ratio = min(max_w / logo.width, max_h / logo.height)
+                new_size = (int(logo.width * ratio), int(logo.height * ratio))
+                logo = logo.resize(new_size, Image.LANCZOS)
+                lx = canvas.width - new_size[0] - x_right
+                canvas.paste(logo, (lx, y), logo)
+                logo_placed = True
+        except Exception:
+            pass
+
+    if not logo_placed:
+        # Draw NRA text placeholder: navy box with gold monogram
+        logo_w, logo_h = min(max_w, 120), min(max_h, 50)
+        logo_box = Image.new("RGBA", (logo_w, logo_h), (10, 22, 40, 220))
+        draw_lb = ImageDraw.Draw(logo_box)
+        try:
+            nra_font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", int(logo_h * 0.55))
+        except Exception:
+            nra_font = ImageFont.load_default()
+        draw_lb.text((logo_w // 2, logo_h // 2), "NRA",
+                     fill=(201, 168, 76, 255), font=nra_font, anchor="mm")
+        lx = canvas.width - logo_w - x_right
+        canvas.paste(logo_box, (lx, y), logo_box)
+
     return canvas
 
 

@@ -11,7 +11,6 @@ if _env_path.exists():
             os.environ.setdefault(key.strip(), value.strip())
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-IMGBB_API_KEY = os.getenv("IMGBB_API_KEY", "")
 SUNO_API_KEY = os.getenv("SUNO_API_KEY", "")
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY", "")
 UPLOADPOST_API_KEY = os.getenv("UPLOADPOST_API_KEY", "")

@@ -410,6 +410,7 @@ def _slide_contact(property_data, primary, accent, branding, lang, slide_index, 
         center_y += 50
 
     # Logo (centered)
+    logo_placed = False
     if branding and branding.get("logo_path"):
         try:
             logo_full = GENERATED_DIR / branding["logo_path"]
@@ -424,8 +425,26 @@ def _slide_contact(property_data, primary, accent, branding, lang, slide_index, 
                 canvas.paste(logo, (lx, ly), logo)
                 draw = ImageDraw.Draw(canvas)
                 center_y = ly + new_size[1] + 20
+                logo_placed = True
         except Exception:
             pass
+    if not logo_placed:
+        # NRA text placeholder: navy box with gold monogram
+        from PIL import ImageFont
+        nra_w, nra_h = 180, 70
+        logo_box = Image.new("RGBA", (nra_w, nra_h), (10, 22, 40, 220))
+        draw_lb = ImageDraw.Draw(logo_box)
+        try:
+            nra_font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 32)
+        except Exception:
+            nra_font = ImageFont.load_default()
+        draw_lb.text((nra_w // 2, nra_h // 2), "NRA",
+                     fill=(201, 168, 76, 255), font=nra_font, anchor="mm")
+        lx = (W - nra_w) // 2
+        ly = center_y + 10
+        canvas.paste(logo_box, (lx, ly), logo_box)
+        draw = ImageDraw.Draw(canvas)
+        center_y = ly + nra_h + 20
 
     # QR code (centered, bottom area)
     canvas = render_qr(canvas, branding, x=(W - 140) // 2, y=max(center_y, 1050), size=140)
