@@ -32,14 +32,14 @@ class ListaProPDF(FPDF):
         self.set_auto_page_break(auto=False)
 
         # Colors
-        self.PRIMARY = (26, 54, 93)       # #1a365d
-        self.ACCENT = (229, 62, 62)       # #e53e3e
+        self.PRIMARY = (10, 22, 40)        # #0A1628 Navy
+        self.ACCENT = (201, 168, 76)       # #C9A84C Gold
         self.TEXT_DARK = (45, 55, 72)      # #2d3748
         self.TEXT_LIGHT = (113, 128, 150)  # #718096
         self.BG_LIGHT = (247, 250, 252)    # #f7fafc
         self.BORDER = (226, 232, 240)      # #e2e8f0
         self.WHITE = (255, 255, 255)
-        self.STAT_BG = (26, 54, 93)
+        self.STAT_BG = (10, 22, 40)        # #0A1628 Navy
 
 
 def resize_photo(photo_path: str, max_width: int = 1200) -> str:
@@ -209,10 +209,10 @@ def _render_footer(pdf, property_data: dict, footer_y: float = 275, branding=Non
     pdf.set_font("Helvetica", "I", 7)
     if qr_rendered:
         pdf.set_xy(120, footer_y + 14)
-        pdf.cell(55, 4, "Generado con ListaPro", align="R")
+        pdf.cell(55, 4, "Nova Realty AI", align="R")
     else:
         pdf.set_xy(140, footer_y + 14)
-        pdf.cell(55, 4, "Generado con ListaPro", align="R")
+        pdf.cell(55, 4, "Nova Realty AI", align="R")
 
 
 def _render_amenities(pdf, amenidades: list, start_y: float, lang: str = "es"):
@@ -256,7 +256,10 @@ def _render_gallery_page(pdf, photos: list, property_data: dict, grid_uniform: b
     precio_fmt = property_data.get("precio_formateado", "")
     ciudad = property_data.get("ciudad", "")
     pais_nombre = property_data.get("pais_nombre", "")
+    zip_code = property_data.get("zip_code", "")
     location = f"{ciudad}, {pais_nombre}" if pais_nombre else ciudad
+    if zip_code:
+        location = f"{location} {zip_code}"
 
     # Title
     pdf.set_text_color(*pdf.PRIMARY)
@@ -470,7 +473,10 @@ def _render_clasico(pdf, property_data: dict, photos: list, branding=None, lang:
     # Location on hero
     ciudad = property_data.get("ciudad", "")
     pais_nombre = property_data.get("pais_nombre", "")
+    zip_code = property_data.get("zip_code", "")
     location = f"{ciudad}, {pais_nombre}" if pais_nombre else ciudad
+    if zip_code:
+        location = f"{location} {zip_code}"
     pdf.set_font("Helvetica", "", 12)
     pdf.set_xy(15, display_h - 17)
     pdf.cell(180, 8, location)
@@ -539,7 +545,10 @@ def _render_moderno(pdf, property_data: dict, photos: list, branding=None, lang:
     precio_fmt = property_data.get("precio_formateado", "")
     ciudad = property_data.get("ciudad", "")
     pais_nombre = property_data.get("pais_nombre", "")
+    zip_code = property_data.get("zip_code", "")
     location = f"{ciudad}, {pais_nombre}" if pais_nombre else ciudad
+    if zip_code:
+        location = f"{location} {zip_code}"
 
     # ── Header bar ──
     pdf.set_fill_color(*pdf.PRIMARY)
