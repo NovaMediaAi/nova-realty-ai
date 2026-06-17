@@ -1,5 +1,5 @@
 """
-Email HTML generator for ListaPro.
+Email HTML generator for Nova Realty AI.
 Creates luxury responsive HTML email templates for property listings.
 """
 
@@ -10,16 +10,12 @@ from labels import get_label, get_operation, get_property_type
 
 # Amenity → emoji mapping
 AMENITY_EMOJIS = {
-    "Jardín": "🌿", "Alberca": "🏊", "Gimnasio": "🏋️", "Roof Garden": "🌇",
-    "Estacionamiento Techado": "🅿️", "Pet Friendly": "🐾", "Área de Juegos": "🎮",
-    "Elevador": "🛗", "Seguridad 24/7": "🔒", "Cuarto de Servicio": "🧹",
-    "Bodega": "📦", "Terraza": "🌅", "Balcón": "🌄", "Vigilancia": "👮",
-    "Portón Eléctrico": "🚗", "Cisterna": "💧", "Calefacción": "🔥",
-    "Aire Acondicionado": "❄️", "Cocina Integral": "🍳", "Walk-in Closet": "👔",
-    "Sala de Cine": "🎬", "Área de BBQ": "🥩", "Cancha de Tenis": "🎾",
-    "Salón de Eventos": "🎉", "Spa": "💆", "Sauna": "♨️",
-    "Jacuzzi": "🛁", "Lobby": "🏛️", "Business Center": "💼",
-    "Coworking": "💻", "Kids Club": "🧒", "Pista de Jogging": "🏃",
+    "Garage": "🚗", "Swimming Pool": "🏊", "Backyard/Yard": "🌿",
+    "Deck/Patio": "🌅", "Gym/Fitness Center": "🏋️", "24/7 Security": "🔒",
+    "Elevator": "🛗", "In-unit Laundry": "🧺", "HOA": "🏘️",
+    "Basement": "⬇️", "Rooftop": "🌇", "Pet Friendly": "🐾",
+    "Furnished": "🛋️", "Central A/C": "❄️", "Fireplace": "🔥",
+    "Smart Home": "🏠",
 }
 
 # Email-specific labels per language
@@ -32,7 +28,7 @@ _EMAIL_LABELS = {
     "footer_rights": {"es": "Todos los derechos reservados", "en": "All rights reserved"},
     "en_venta": {"es": "En Venta", "en": "For Sale"},
     "en_renta": {"es": "En Renta", "en": "For Rent"},
-    "en_renta_temporal": {"es": "En Renta Temporal", "en": "Short-Term Rental"},
+    "en_renta_temporal": {"es": "Renta Temporal", "en": "Short-Term Rental"},
 }
 
 
@@ -43,9 +39,9 @@ def _el(key: str, lang: str = "es") -> str:
 
 def _op_badge(operacion: str, lang: str = "es") -> str:
     op_map = {
-        "Venta": "en_venta",
-        "Renta": "en_renta",
-        "Renta Temporal": "en_renta_temporal",
+        "For Sale": "en_venta",
+        "For Rent": "en_renta",
+        "Short-Term Rental": "en_renta_temporal",
     }
     return _el(op_map.get(operacion, "en_venta"), lang)
 
@@ -324,7 +320,7 @@ def generate_email_html(
                         <!-- FOOTER -->
                         <tr>
                             <td style="background:#1c1c24;padding:18px 36px;text-align:center;">
-                                <p style="font-family:'Jost',Arial,sans-serif;font-size:10px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin:0;">{footer_gen} <span style="color:#b8943f;">ListaPro</span> &nbsp;·&nbsp; {footer_rights}</p>
+                                <p style="font-family:'Jost',Arial,sans-serif;font-size:10px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin:0;">{footer_gen} <span style="color:#b8943f;">Nova Realty AI</span> &nbsp;·&nbsp; {footer_rights}</p>
                             </td>
                         </tr>
                     </table>
