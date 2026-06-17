@@ -471,7 +471,7 @@ async def generar_listado(
         insta_data = {
             **property_data,
             "precio_formateado": precio_fmt,
-            "pais_nombre": country["name"],
+            "pais_nombre": state_name,
         }
         generate_instagram_post(
             insta_data, cover, str(instagram_path),
@@ -668,7 +668,7 @@ async def generar_listado(
     video_data = {
         **property_data,
         "precio_formateado": precio_fmt,
-        "pais_nombre": country["name"],
+        "pais_nombre": state_name,
     }
     frase_gancho = ai_copy.get("frase_gancho", "")
     asyncio.create_task(_run_video_task(
