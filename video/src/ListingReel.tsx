@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Audio,
+  Sequence,
   interpolate,
   useCurrentFrame,
   useVideoConfig,
@@ -32,7 +33,7 @@ const BackgroundMusic: React.FC<{ src: string; maxVolume?: number }> = ({
   maxVolume = 0.35,
 }) => {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
+  const { durationInFrames, fps } = useVideoConfig();
 
   const volume = interpolate(
     frame,
@@ -41,7 +42,19 @@ const BackgroundMusic: React.FC<{ src: string; maxVolume?: number }> = ({
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  return <Audio src={src} volume={volume} />;
+  // ElevenLabs Sound Effects max = 22s. Loop copies to fill video duration.
+  const chunkFrames = Math.round(22 * fps);
+  const numCopies = Math.ceil(durationInFrames / chunkFrames) + 1;
+
+  return (
+    <>
+      {Array.from({ length: numCopies }, (_, i) => (
+        <Sequence key={i} from={i * chunkFrames} durationInFrames={chunkFrames} layout="none">
+          <Audio src={src} volume={volume} />
+        </Sequence>
+      ))}
+    </>
+  );
 };
 
 const VoiceoverAudio: React.FC<{ src: string }> = ({ src }) => {
