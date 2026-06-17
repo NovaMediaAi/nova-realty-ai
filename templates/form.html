@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ListaPro - Genera Listados Inmobiliarios Profesionales</title>
+    <title>Nova Realty AI - Professional Listing Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
     <header class="header">
         <div class="header-inner">
             <div class="header-logo">
-                <h1>Lista<span>Pro</span></h1>
+                <h1>Nova Realty <span>AI</span></h1>
             </div>
             <nav class="header-nav">
                 <a href="/plantilla" class="header-nav-link">Plantilla</a>
@@ -81,12 +81,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>País <span class="required">*</span></label>
-                            <select name="pais" id="countrySelect" required>
-                                {% for key, country in countries.items() %}
-                                <option value="{{ key }}" data-symbol="{{ country.symbol }}" data-currency="{{ country.currency }}">
-                                    {{ country.name }}
-                                </option>
+                            <label>State <span class="required">*</span></label>
+                            <select name="pais" id="stateSelect" required>
+                                <option value="">Select state...</option>
+                                {% for abbr, name in states.items() %}
+                                <option value="{{ abbr }}">{{ name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -98,12 +97,20 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Ciudad / Zona <span class="required">*</span></label>
-                            <input type="text" name="ciudad" placeholder="Ej: Polanco, CDMX" required>
+                            <label>City / Area <span class="required">*</span></label>
+                            <input type="text" name="ciudad" placeholder="e.g. Miami, Downtown" required>
                         </div>
                         <div class="form-group full-width">
-                            <label>Dirección</label>
-                            <input type="text" name="direccion" placeholder="Calle, número, colonia (opcional para el listado público)">
+                            <label>Address</label>
+                            <input type="text" name="direccion" placeholder="Street, number (optional for public listing)">
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP Code</label>
+                            <input type="text" name="zip_code" placeholder="e.g. 33139" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label>MLS #</label>
+                            <input type="text" name="mls_number" placeholder="Optional MLS number">
                         </div>
                     </div>
                 </div>
@@ -124,7 +131,7 @@
                         <div class="form-group full-width">
                             <label>Precio <span class="required">*</span></label>
                             <div class="price-input-wrapper">
-                                <span class="currency-badge" id="currencyBadge">$ MXN</span>
+                                <span class="currency-badge" id="currencyBadge">$ USD</span>
                                 <input type="number" name="precio" placeholder="Ej: 8500000" required min="0" step="1">
                             </div>
                         </div>
@@ -745,12 +752,8 @@
         // Initialize step indicators on page load
         updateActiveSteps();
 
-        const countrySelect = document.getElementById('countrySelect');
-        const currencyBadge = document.getElementById('currencyBadge');
-        countrySelect.addEventListener('change', function() {
-            const selected = this.options[this.selectedIndex];
-            currencyBadge.textContent = `${selected.dataset.symbol} ${selected.dataset.currency}`;
-        });
+        // Currency is always USD — no dynamic update needed
+        // (stateSelect replaces countrySelect; badge is fixed at "$ USD")
 
         // ============================================
         // COVER PHOTO (single file + rotation)
