@@ -129,27 +129,43 @@ def _generate_qr_image(url: str) -> str:
 
 
 def _render_logo(pdf, branding, x, y, max_w, max_h, bg=True):
-    """Render branding logo at given position, fitting within max dimensions."""
-    if not branding or not branding.get("logo_path"):
-        return
-    logo_path = GENERATED_DIR / branding["logo_path"]
-    if not logo_path.exists():
-        return
-    try:
-        img = Image.open(str(logo_path))
-        iw, ih = img.size
-        aspect = iw / ih
-        w, h = max_w, max_w / aspect
-        if h > max_h:
-            h = max_h
-            w = max_h * aspect
-        actual_x = x + (max_w - w)
-        if bg:
-            pdf.set_fill_color(255, 255, 255)
-            pdf.rect(actual_x - 2, y - 1, w + 4, h + 2, "F")
-        pdf.image(str(logo_path), x=actual_x, y=y, w=w, h=h)
-    except Exception:
-        pass
+    """Render branding logo at given position, fitting within max dimensions.
+
+    If no logo file is available, draws a Navy (#0A1628) box with Gold (#C9A84C)
+    'NRA' monogram text as a placeholder.
+    """
+    logo_placed = False
+    if branding and branding.get("logo_path"):
+        logo_path = GENERATED_DIR / branding["logo_path"]
+        if logo_path.exists():
+            try:
+                img = Image.open(str(logo_path))
+                iw, ih = img.size
+                aspect = iw / ih
+                w, h = max_w, max_w / aspect
+                if h > max_h:
+                    h = max_h
+                    w = max_h * aspect
+                actual_x = x + (max_w - w)
+                if bg:
+                    pdf.set_fill_color(255, 255, 255)
+                    pdf.rect(actual_x - 2, y - 1, w + 4, h + 2, "F")
+                pdf.image(str(logo_path), x=actual_x, y=y, w=w, h=h)
+                logo_placed = True
+            except Exception:
+                pass
+
+    if not logo_placed:
+        # Draw NRA text placeholder: navy box with gold monogram
+        box_w = max_w
+        box_h = max_h
+        pdf.set_fill_color(10, 22, 40)   # Navy
+        pdf.rect(x, y, box_w, box_h, "F")
+        pdf.set_font("Helvetica", "B", 14)
+        pdf.set_text_color(201, 168, 76)  # Gold
+        pdf.set_xy(x, y + (box_h - 5) / 2)
+        pdf.cell(box_w, 5, "NRA", align="C")
+        pdf.set_text_color(0, 0, 0)  # reset
 
 
 def _render_footer(pdf, property_data: dict, footer_y: float = 275, branding=None):
@@ -463,8 +479,8 @@ def _render_clasico(pdf, property_data: dict, photos: list, branding=None, lang:
     pdf.set_xy(210 - 12 - type_w, 12.5)
     pdf.cell(type_w, 7, tipo, align="C")
 
-    # Logo over hero (upper-right, white background)
-    _render_logo(pdf, branding, x=160, y=5, max_w=35, max_h=12, bg=True)
+    # Logo over hero (upper-right, above property type badge)
+    _render_logo(pdf, branding, x=168, y=2, max_w=30, max_h=9, bg=True)
 
     # Price on hero
     precio_fmt = property_data.get("precio_formateado", "")

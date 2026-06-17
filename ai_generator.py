@@ -68,7 +68,9 @@ Respond ONLY with valid JSON (no markdown, no backticks) with these 5 keys:
 - Phone: {property_data.get('agente_telefono', '')}"""
 
     else:
-        system_prompt = """Eres un copywriter profesional de bienes raíces especializado en el mercado de Estados Unidos. Crea textos atractivos y profesionales para listados de propiedades en inglés y español.
+        system_prompt = """Eres un copywriter profesional de bienes raíces especializado en el mercado de Estados Unidos. Crea textos ÚNICAMENTE EN ESPAÑOL para listados de propiedades.
+
+IMPORTANTE: TODO el contenido generado debe estar en ESPAÑOL. Los datos de la propiedad pueden estar en inglés (nombres de tipos de propiedad, amenidades) pero tu respuesta SIEMPRE es en español.
 
 REGLAS:
 - Usa vocabulario inmobiliario apropiado para el mercado de USA
@@ -76,7 +78,7 @@ REGLAS:
 - Sé formal pero accesible
 - Destaca las características más atractivas
 - NO inventes datos que no estén en la información proporcionada
-- Contenido en español, pero con referencias geográficas de USA (ciudad, estado)
+- TODO el contenido en español, incluyendo hashtags y llamados a la acción
 
 Responde ÚNICAMENTE con un JSON válido (sin markdown, sin backticks) con estas 5 claves:
 
@@ -90,9 +92,12 @@ Responde ÚNICAMENTE con un JSON válido (sin markdown, sin backticks) con estas
 
 5. "copy_email": Email profesional para blast inmobiliario. Asunto atractivo en la PRIMERA línea (prefijo "Asunto: "), línea en blanco, después 3-4 párrafos cortos. Sin etiquetas HTML. Sin nombre/teléfono del agente."""
 
-        user_message = f"""DATOS DE LA PROPIEDAD:
-- Tipo: {property_data.get('tipo_propiedad', 'No especificado')}
-- Operación: {property_data.get('operacion', 'For Sale')}
+        from labels import get_property_type, get_operation
+        tipo_es = get_property_type(property_data.get('tipo_propiedad', ''), 'es') or property_data.get('tipo_propiedad', 'No especificado')
+        operacion_es = get_operation(property_data.get('operacion', ''), 'es') or property_data.get('operacion', 'Venta')
+        user_message = f"""DATOS DE LA PROPIEDAD (RESPONDE TODO EN ESPAÑOL):
+- Tipo: {tipo_es}
+- Operación: {operacion_es}
 - Precio: {precio_fmt}
 - Ubicación: {location}
 - Dirección: {property_data.get('direccion', 'No publicada')}
