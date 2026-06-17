@@ -25,7 +25,7 @@ const defaultProps: ListingProps = {
   ],
   agenteNombre: "María García",
   agenteTelefono: "+52 55 1234 5678",
-  agenciaNombre: "Inmobiliaria Premium",
+  agenciaNombre: "Nova Realty Agency",
   videoStyle: "elegante",
 };
 

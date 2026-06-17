@@ -1,121 +1,75 @@
-# ListaPro
+# Nova Realty AI
 
-Genera automaticamente contenido profesional para tus listados inmobiliarios: PDF, post de Instagram, historia, carrusel, email, video reel con locucion, y publicacion directa a Instagram.
+AI-powered real estate marketing platform. Fill out one form → get a full marketing package in under 2 minutes: professional PDF brochure, Instagram post/story/carousel, email HTML, voiceover MP3, and an MP4 video reel.
 
----
+## Quick Install (with Claude Code)
 
-## Antes de empezar
-
-Instala estos 2 programas (solo la primera vez):
-
-1. **Node.js** — Descargalo de [nodejs.org](https://nodejs.org/) (boton verde "LTS") e instala
-2. **Python** — Descargalo de [python.org/downloads](https://www.python.org/downloads/) e instala
-   - **En Windows**: marca la casilla **"Add Python to PATH"** antes de instalar
-
----
-
-## Instalacion con Claude Code
-
-### Paso 1: Abre Claude Code
-
-Abre Claude Code en tu computadora. Si no lo tienes, descargalo de [claude.ai/download](https://claude.ai/download).
-
-### Paso 2: Dile a Claude que clone el proyecto
-
-Copia y pega esto en Claude Code:
+Open Claude Code and paste this prompt — it handles everything automatically:
 
 ```
-Clona el repositorio https://github.com/santmun/inmobiliaria.git en mi carpeta de Documentos, instala todas las dependencias de Python (en un entorno virtual) y de Node (en la carpeta video/), y crea el archivo .env a partir de .env.example
+Clone the repository https://github.com/NovaMediaAi/nova-realty-ai.git, install all Python dependencies (in a .venv virtual environment) and Node.js dependencies (in the video/ folder), and create the .env file from .env.example. When done, guide me step by step to configure each API key, explaining what each one is for and how to get it. Then start the server automatically.
 ```
 
-Claude va a hacer todo automaticamente.
+## Manual Install
 
-### Paso 3: Configura tus API keys
+```bash
+# 1. Clone
+git clone https://github.com/NovaMediaAi/nova-realty-ai.git
+cd nova-realty-ai
 
-Cuando Claude termine, dile:
+# 2. Python env
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
 
-```
-Abre el archivo .env para que yo ponga mis API keys
-```
+# 3. Node (Remotion video)
+cd video && npm install && cd ..
 
-Necesitas poner al menos tu key de **OpenAI** (las demas son opcionales):
+# 4. Environment
+cp .env.example .env
+# Edit .env and add your API keys
 
-| Servicio | Para que sirve | Donde obtenerla |
-|----------|---------------|-----------------|
-| **OpenAI** (obligatoria) | Genera los textos y descripciones | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
-| ImgBB | Sube fotos para el video | [api.imgbb.com](https://api.imgbb.com/) |
-| ElevenLabs | Voz del locutor en el video | [elevenlabs.io](https://elevenlabs.io/) |
-| Suno | Musica original para el video | [suno.com](https://suno.com/) |
-| Upload Post | Publicar directo a Instagram | [upload-post.com](https://upload-post.com/) |
-
-> Sin las keys opcionales, el PDF, post, historia, carrusel y email funcionan perfecto. Solo el video y la publicacion a Instagram necesitan las extras.
-
-#### Como obtener tu key de OpenAI
-
-1. Ve a [platform.openai.com](https://platform.openai.com/) y crea una cuenta
-2. En el menu, ve a **API Keys**
-3. Clic en **"Create new secret key"**
-4. Copia la key (empieza con `sk-proj-...`)
-5. Pegala en tu archivo `.env`
-6. Agrega credito en **Billing** (minimo $5 USD)
-
-### Paso 4: Inicia ListaPro
-
-Dile a Claude:
-
-```
-Inicia el servidor de ListaPro
+# 5. Start
+python main.py
 ```
 
-### Paso 5: Abre tu navegador
+Open **http://localhost:8000** and start generating listings.
 
-Ve a **http://localhost:8000** y listo, ya puedes generar listados.
+## API Keys
 
----
+| Key | Required | Purpose |
+|-----|----------|---------|
+| `OPENAI_API_KEY` | **Yes** | All AI copy generation |
+| `ELEVENLABS_API_KEY` | Optional | Voiceover + background music |
+| `IMGBB_API_KEY` | Optional | Photo hosting for Remotion video |
+| `UPLOADPOST_API_KEY` | Optional | Direct Instagram publishing |
+| `SUPABASE_URL` / `SUPABASE_KEY` | Optional | Cloud storage (default: local disk) |
 
-## Como usar ListaPro
+Without optional keys: PDF, Instagram post/story/carousel, and email work perfectly. Only video + Instagram publishing need the extras.
 
-### Primera vez: configura tu plantilla
+## What gets generated
 
-1. Ve a **http://localhost:8000/plantilla**
-2. Sube tu logo y foto de agente
-3. Llena tus datos de contacto
-4. Clic en **"Guardar Configuracion"**
+For each listing submission:
 
-> Solo se hace una vez. Se guarda para todos tus listados.
+- `nova_<id>.pdf` — Professional PDF brochure (classic or modern template)
+- `instagram_<id>.png` — Square Instagram post
+- `story_<id>.png` — Vertical story
+- `carousel/` — Multi-slide carousel + ZIP
+- `email_<id>.html` — Inline-CSS email ready to send
+- `voiceover.mp3` — ElevenLabs narration (if key provided)
+- `nova_<id>.mp4` — Remotion-rendered video reel (background job)
 
-### Generar un listado
+## Features
 
-1. Ve a **http://localhost:8000**
-2. Llena los datos de la propiedad
-3. Sube las fotos (la primera es la portada)
-4. Clic en **"Generar Listado Profesional"**
-5. Descarga o copia lo que necesites desde la pagina de resultados
+- **Bilingual** — EN/ES toggle in the form header
+- **US market** — 50 states + Puerto Rico, USD pricing, MLS # and ZIP Code fields
+- **Brand settings** — Upload logo, agent photo, set colors at `/plantilla`
+- **Direct Instagram publish** — Post, story, carousel via Upload Post API
+- **Video types** — Quick reel or narrated tour with scene-synced voiceover
 
-### Las proximas veces
+## Architecture
 
-Cuando quieras volver a usar ListaPro, abre Claude Code y dile:
+See [CLAUDE.md](CLAUDE.md) for full architecture documentation.
 
-```
-Inicia el servidor de ListaPro
-```
+## Contact
 
-Y abre **http://localhost:8000** en tu navegador.
-
----
-
-## Problemas comunes
-
-**"Error al generar textos"** — Tu key de OpenAI no es valida o no tiene credito.
-
-**"No se genera el video"** — Falta la key de ImgBB o Node.js no esta instalado.
-
-**"Error de red al publicar a Instagram"** — Falta la key de Upload Post o el video no termino de generarse.
-
-**"El servidor no inicia"** — Dile a Claude Code: `Revisa por que no inicia el servidor de ListaPro y arreglalo`.
-
----
-
-## Licencia
-
-Proyecto privado. Todos los derechos reservados.
+hello@nova-media.ai

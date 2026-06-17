@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).parent
 GENERATED_DIR = BASE_DIR / "generated"
 
 
-class ListaProPDF(FPDF):
+class NovaRealtyPDF(FPDF):
     """Custom PDF class for professional real estate listings."""
 
     def __init__(self):
@@ -695,7 +695,7 @@ def _render_moderno(pdf, property_data: dict, photos: list, branding=None, lang:
 
 def generate_pdf(property_data: dict, photo_paths: list, output_path: str, color_overrides=None, template="clasico", branding=None, lang: str = "es") -> str:
     """Generate a professional PDF listing with selected template variant."""
-    pdf = ListaProPDF()
+    pdf = NovaRealtyPDF()
 
     # Apply color overrides if provided
     if color_overrides:
