@@ -175,6 +175,7 @@ export const ListingReel: React.FC<ListingProps> = (props) => {
               qrUrl={props.qrUrl}
               bgPhotoUrl={props.fotoPortada}
               style={style}
+              lang={props.lang}
             />
           </TransitionSeries.Sequence>
         </TransitionSeries>
@@ -282,6 +283,7 @@ export const ListingReel: React.FC<ListingProps> = (props) => {
             qrUrl={props.qrUrl}
             bgPhotoUrl={props.fotoPortada}
             style={style}
+            lang={props.lang}
           />
         </TransitionSeries.Sequence>
       </TransitionSeries>

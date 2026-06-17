@@ -34,6 +34,8 @@ export type ListingProps = {
   // Scene sync (voiceover tours): relative duration weight per photo
   // e.g. [0.15, 0.2, 0.18, 0.12, 0.15, 0.2] — must sum to ~1.0
   sceneWeights?: number[];
+  // Language for bilingual UI ("es" | "en", default "es")
+  lang?: string;
 };
 
 export type StylePreset = {

@@ -19,6 +19,7 @@ type ContactCTAProps = {
   qrUrl?: string;
   bgPhotoUrl?: string;
   style: StylePreset;
+  lang?: string;
 };
 
 export const ContactCTA: React.FC<ContactCTAProps> = ({
@@ -30,7 +31,11 @@ export const ContactCTA: React.FC<ContactCTAProps> = ({
   qrUrl,
   bgPhotoUrl,
   style: s,
+  lang = "es",
 }) => {
+  const ctaText = lang === "en" ? "Schedule a Tour" : "Agenda tu visita";
+  const scanText = lang === "en" ? "SCAN FOR MORE INFO" : "ESCANEA PARA MÁS INFO";
+  const brandText = "NOVA REALTY AI";
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const speed = s.animSpeed;
@@ -211,7 +216,7 @@ export const ContactCTA: React.FC<ContactCTAProps> = ({
           marginBottom: 20,
         }}
       >
-        Agenda tu visita
+        {ctaText}
       </div>
 
       {/* Gold line */}
@@ -314,7 +319,7 @@ export const ContactCTA: React.FC<ContactCTAProps> = ({
               letterSpacing: 2,
             }}
           >
-            ESCANEA PARA MÁS INFO
+            {scanText}
           </div>
         </div>
       )}
@@ -351,7 +356,7 @@ export const ContactCTA: React.FC<ContactCTAProps> = ({
           letterSpacing: 5,
         }}
       >
-        LISTAPRO
+        {brandText}
       </div>
     </div>
   );

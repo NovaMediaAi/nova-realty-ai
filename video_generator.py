@@ -101,6 +101,8 @@ async def generate_video(
             "agenteNombre": property_data.get("agente_nombre", ""),
             "agenteTelefono": property_data.get("agente_telefono", ""),
             "agenciaNombre": property_data.get("agencia_nombre", ""),
+            "lang": property_data.get("idioma", "es"),
+            "watermark": "NOVA REALTY AI",
         }
 
         if music_url:
