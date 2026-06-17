@@ -202,6 +202,7 @@ export const ListingReel: React.FC<ListingProps> = (props) => {
             logoUrl={props.logoUrl}
             bgPhotoUrl={props.fotoPortada}
             style={style}
+            lang={props.lang}
           />
         </TransitionSeries.Sequence>
 

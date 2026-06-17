@@ -16,6 +16,7 @@ type OpeningProps = {
   logoUrl?: string;
   bgPhotoUrl?: string;
   style: StylePreset;
+  lang?: string;
 };
 
 export const Opening: React.FC<OpeningProps> = ({
@@ -24,6 +25,7 @@ export const Opening: React.FC<OpeningProps> = ({
   logoUrl,
   bgPhotoUrl,
   style: s,
+  lang = "es",
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
