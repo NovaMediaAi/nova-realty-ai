@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Optional
 
-from config import COUNTRIES, PROPERTY_TYPES, OPERATIONS, AMENITIES, format_price, SUNO_API_KEY
+from config import STATES, PROPERTY_TYPES, OPERATIONS, AMENITIES, format_price, SUNO_API_KEY
 from ai_generator import generate_listing_copy
 from pdf_generator import generate_pdf
 from video_generator import generate_video
@@ -188,11 +188,11 @@ async def historial(request: Request):
     listings = []
     for row in raw_listings:
         pd = row.get("property_data", {})
-        country_key = pd.get("pais", "mexico")
-        country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
+        country_key = pd.get("pais", "")
+        state_name = STATES.get(country_key, country_key)
         precio = pd.get("precio", 0)
         try:
-            precio_fmt = format_price(float(precio), country_key)
+            precio_fmt = format_price(float(precio))
         except (ValueError, TypeError):
             precio_fmt = ""
 
@@ -239,7 +239,7 @@ async def historial(request: Request):
             "tipo_propiedad": pd.get("tipo_propiedad", ""),
             "operacion": pd.get("operacion", ""),
             "ciudad": pd.get("ciudad", ""),
-            "pais_nombre": country["name"],
+            "pais_nombre": state_name,
             "precio_fmt": precio_fmt,
             "status": status,
             "video_status": video_status,
@@ -258,7 +258,7 @@ async def historial(request: Request):
 async def show_form(request: Request, error: Optional[str] = None):
     return templates.TemplateResponse("form.html", {
         "request": request,
-        "countries": COUNTRIES,
+        "states": STATES,
         "property_types": PROPERTY_TYPES,
         "operations": OPERATIONS,
         "amenities": AMENITIES,
@@ -316,6 +316,8 @@ async def generar_listado(
     pisos: Optional[str] = Form(None),
     amenidades: list[str] = Form(default=[]),
     otras_amenidades: str = Form(""),
+    zip_code: str = Form(""),
+    mls_number: str = Form(""),
     agente_nombre: str = Form(...),
     agente_telefono: str = Form(...),
     agente_email: str = Form(""),
@@ -349,6 +351,9 @@ async def generar_listado(
         "pisos": pisos or "1",
         "amenidades": amenidades,
         "otras_amenidades": otras_amenidades,
+        "zip_code": zip_code,
+        "mls_number": mls_number,
+        "state": pais,  # pais field now carries state abbreviation
         "agente_nombre": agente_nombre,
         "agente_telefono": agente_telefono,
         "agente_email": agente_email,
@@ -397,7 +402,7 @@ async def generar_listado(
     except Exception as e:
         return templates.TemplateResponse("form.html", {
             "request": request,
-            "countries": COUNTRIES,
+            "states": STATES,
             "property_types": PROPERTY_TYPES,
             "operations": OPERATIONS,
             "amenities": AMENITIES,
@@ -425,13 +430,13 @@ async def generar_listado(
     settings = load_settings()
 
     try:
-        country = COUNTRIES.get(pais, COUNTRIES["mexico"])
-        precio_fmt = format_price(precio, pais)
+        state_name = STATES.get(pais, pais)
+        precio_fmt = format_price(precio)
 
         pdf_data = {
             **property_data,
             "precio_formateado": precio_fmt,
-            "pais_nombre": country["name"],
+            "pais_nombre": state_name,
             "descripcion": ai_copy.get("descripcion_pdf", ""),
         }
         pdf_template = settings["pdf"].get("pdf_template", "clasico")
@@ -445,7 +450,7 @@ async def generar_listado(
     except Exception as e:
         return templates.TemplateResponse("form.html", {
             "request": request,
-            "countries": COUNTRIES,
+            "states": STATES,
             "property_types": PROPERTY_TYPES,
             "operations": OPERATIONS,
             "amenities": AMENITIES,
@@ -689,8 +694,8 @@ async def resultado(request: Request, job_id: str):
 
     pd = listing.get("property_data", {})
     ai_copy = listing.get("ai_copy", {})
-    country_key = pd.get("pais", "mexico")
-    country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
+    country_key = pd.get("pais", "")
+    state_name = STATES.get(country_key, country_key)
 
     # Get Upload Post profiles for publish buttons
     upload_profiles = []
@@ -715,7 +720,7 @@ async def resultado(request: Request, job_id: str):
         "tipo_propiedad": pd.get("tipo_propiedad", ""),
         "operacion": pd.get("operacion", ""),
         "ciudad": pd.get("ciudad", ""),
-        "pais_nombre": country["name"],
+        "pais_nombre": state_name,
         "pdf_filename": listing.get("pdf_storage_path", ""),
         "instagram_filename": listing.get("instagram_storage_path", ""),
         "story_filename": listing.get("story_storage_path", ""),
@@ -794,15 +799,15 @@ async def generar_con_voiceover(
     # Reconstruct data needed for video generation
     pd = listing.get("property_data", {})
     ai_copy = listing.get("ai_copy", {})
-    country_key = pd.get("pais", "mexico")
-    country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
+    country_key = pd.get("pais", "")
+    state_name = STATES.get(country_key, country_key)
     precio = float(pd.get("precio", 0))
-    precio_fmt = format_price(precio, country_key)
+    precio_fmt = format_price(precio)
 
     video_data = {
         **pd,
         "precio_formateado": precio_fmt,
-        "pais_nombre": country["name"],
+        "pais_nombre": state_name,
     }
 
     # Rebuild photo_paths from local files (only originals: portada* and extra_*)
@@ -887,12 +892,12 @@ async def video_retry(job_id: str):
     job_dir = GENERATED_DIR / job_id
     pd = listing.get("property_data", {})
     ai_copy = listing.get("ai_copy", {})
-    country_key = pd.get("pais", "mexico")
-    country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
+    country_key = pd.get("pais", "")
+    state_name = STATES.get(country_key, country_key)
     precio = float(pd.get("precio", 0))
-    precio_fmt = format_price(precio, country_key)
+    precio_fmt = format_price(precio)
 
-    video_data = {**pd, "precio_formateado": precio_fmt, "pais_nombre": country["name"]}
+    video_data = {**pd, "precio_formateado": precio_fmt, "pais_nombre": state_name}
 
     photos_dir = job_dir / "photos"
     photo_paths = []

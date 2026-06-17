@@ -1,16 +1,16 @@
 import json
 from openai import OpenAI
-from config import OPENAI_API_KEY, COUNTRIES, format_price
+from config import OPENAI_API_KEY, STATES, format_price
 
 
 def generate_listing_copy(property_data: dict) -> dict:
     """Generate real estate listing copy using OpenAI API."""
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    country_key = property_data.get("pais", "mexico")
-    country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
+    country_key = property_data.get("pais", "")
+    state_name = STATES.get(country_key, country_key or "USA")
     precio = float(property_data.get("precio", 0))
-    precio_fmt = format_price(precio, country_key)
+    precio_fmt = format_price(precio)
     lang = property_data.get("idioma", "es")
 
     amenidades = property_data.get("amenidades", [])
@@ -22,11 +22,11 @@ def generate_listing_copy(property_data: dict) -> dict:
     amenidades_str = ", ".join(amenidades) if amenidades else ("No especificadas" if lang == "es" else "Not specified")
 
     if lang == "en":
-        system_prompt = f"""You are a professional real estate copywriter with extensive experience in the {country['name']} property market. Your job is to create attractive, professional listing copy in English.
+        system_prompt = f"""You are a professional real estate copywriter with extensive experience in the {state_name} property market. Your job is to create attractive, professional listing copy in English.
 
 RULES:
-- Use appropriate real estate vocabulary for the {country['name']} market
-- Prices are expressed in {country['currency']}
+- Use appropriate real estate vocabulary for the {state_name} market
+- Prices are expressed in USD
 - Be professional yet approachable
 - Highlight the most attractive features of the property
 - DO NOT make up information not provided in the data
@@ -49,7 +49,7 @@ Respond ONLY with valid JSON (no markdown, no backticks) with these 5 keys:
 - Type: {property_data.get('tipo_propiedad', 'Not specified')}
 - Operation: {property_data.get('operacion', 'Sale')}
 - Price: {precio_fmt}
-- Location: {property_data.get('ciudad', '')}, {country['name']}
+- Location: {property_data.get('ciudad', '')}, {state_name}
 - Address: {property_data.get('direccion', 'Not published')}
 - Bedrooms: {property_data.get('recamaras', 'Not specified')}
 - Bathrooms: {property_data.get('banos', 'Not specified')}
@@ -63,11 +63,11 @@ Respond ONLY with valid JSON (no markdown, no backticks) with these 5 keys:
 - Phone: {property_data.get('agente_telefono', '')}"""
 
     else:
-        system_prompt = f"""Eres un copywriter profesional de bienes raíces con amplia experiencia en el mercado inmobiliario de {country['name']}. Tu trabajo es crear textos atractivos y profesionales para listados de propiedades.
+        system_prompt = f"""Eres un copywriter profesional de bienes raíces con amplia experiencia en el mercado inmobiliario de {state_name}. Tu trabajo es crear textos atractivos y profesionales para listados de propiedades.
 
 REGLAS:
-- Usa vocabulario inmobiliario apropiado para {country['name']}
-- Los precios se expresan en {country['currency']}
+- Usa vocabulario inmobiliario apropiado para {state_name}
+- Los precios se expresan en USD
 - Sé formal pero accesible
 - Destaca las características más atractivas de la propiedad
 - NO inventes datos que no estén en la información proporcionada
@@ -89,7 +89,7 @@ Responde ÚNICAMENTE con un JSON válido (sin markdown, sin backticks) con estas
 - Tipo: {property_data.get('tipo_propiedad', 'No especificado')}
 - Operación: {property_data.get('operacion', 'Venta')}
 - Precio: {precio_fmt}
-- Ubicación: {property_data.get('ciudad', '')}, {country['name']}
+- Ubicación: {property_data.get('ciudad', '')}, {state_name}
 - Dirección: {property_data.get('direccion', 'No publicada')}
 - Recámaras: {property_data.get('recamaras', 'No especificado')}
 - Baños: {property_data.get('banos', 'No especificado')}

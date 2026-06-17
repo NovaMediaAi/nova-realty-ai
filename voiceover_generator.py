@@ -6,6 +6,7 @@ Integrates with ElevenLabs API for text-to-speech generation.
 import json
 import requests
 from pathlib import Path
+from typing import Optional
 
 from config import OPENAI_API_KEY, ELEVENLABS_API_KEY
 
@@ -33,11 +34,11 @@ def generate_voiceover_script(property_data: dict, video_type: str = "reel",
 
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    from config import COUNTRIES, format_price
-    country_key = property_data.get("pais", "mexico")
-    country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
+    from config import STATES, format_price
+    country_key = property_data.get("pais", "")
+    state_name = STATES.get(country_key, property_data.get("pais", "USA"))
     precio = float(property_data.get("precio", 0))
-    precio_fmt = format_price(precio, country_key)
+    precio_fmt = format_price(precio)
 
     amenidades = property_data.get("amenidades", [])
     if isinstance(amenidades, str):
@@ -81,7 +82,7 @@ Duration: 45-60 seconds when read aloud (approximately 120-160 words)."""
 - End with a call to action
 Duration: 15-25 seconds when read aloud (approximately 40-65 words)."""
 
-        system_prompt = f"""You are a professional real estate voiceover scriptwriter for the {country['name']} market.
+        system_prompt = f"""You are a professional real estate voiceover scriptwriter for the {state_name} market.
 
 {tone_desc}
 
@@ -90,8 +91,8 @@ Duration: 15-25 seconds when read aloud (approximately 40-65 words)."""
 RULES:
 - Write ONLY the script text that will be read aloud — no stage directions, no brackets, no labels
 - Make it sound natural when spoken, not like reading text
-- IMPORTANT: Write prices in SPOKEN form, NOT abbreviated. For example: "seven million five hundred thousand pesos" instead of "MXN 7,500,000" or "$7,500,000 MXN". Never use currency codes like MXN, USD, COP etc. — write them as spoken words (pesos, dollars, etc.)
-- Prices are in {country['currency']}
+- IMPORTANT: Write prices in SPOKEN form, NOT abbreviated. For example: "seven hundred fifty thousand dollars" instead of "$750,000". Never use currency codes — write them as spoken words (dollars, etc.)
+- Prices are in USD
 - DO NOT invent features not provided in the data
 - ALL content must be in English
 - Do NOT include hashtags, emojis, or social media formatting"""
@@ -100,7 +101,7 @@ RULES:
 - Type: {property_data.get('tipo_propiedad', '')}
 - Operation: {property_data.get('operacion', 'Sale')}
 - Price: {precio_fmt}
-- Location: {property_data.get('ciudad', '')}, {country['name']}
+- Location: {property_data.get('ciudad', '')}, {state_name}
 - Bedrooms: {property_data.get('recamaras', '')}
 - Bathrooms: {property_data.get('banos', '')}
 - Built area: {property_data.get('m2_construidos', '')} m²
@@ -130,7 +131,7 @@ Duración: 45-60 segundos al leerlo en voz alta (aproximadamente 120-160 palabra
 - Termina con un llamado a la acción
 Duración: 15-25 segundos al leerlo en voz alta (aproximadamente 40-65 palabras)."""
 
-        system_prompt = f"""Eres un guionista profesional de voiceover inmobiliario para el mercado de {country['name']}.
+        system_prompt = f"""Eres un guionista profesional de voiceover inmobiliario para el mercado de {state_name}.
 
 {tone_desc}
 
@@ -139,8 +140,8 @@ Duración: 15-25 segundos al leerlo en voz alta (aproximadamente 40-65 palabras)
 REGLAS:
 - Escribe SOLO el texto del guión que se va a leer en voz alta — sin direcciones de escena, sin corchetes, sin etiquetas
 - Debe sonar natural al hablarlo, no como texto leído
-- IMPORTANTE: Escribe los precios en forma HABLADA, NO abreviada. Por ejemplo: "siete millones quinientos mil pesos" en lugar de "MXN 7,500,000" o "$7,500,000 MXN". Nunca uses códigos de moneda como MXN, USD, COP etc. — escríbelos como palabras habladas (pesos, dólares, etc.)
-- Los precios están en {country['currency']}
+- IMPORTANTE: Escribe los precios en forma HABLADA, NO abreviada. Por ejemplo: "setecientos cincuenta mil dólares" en lugar de "$750,000". Nunca uses códigos de moneda — escríbelos como palabras habladas (dólares, etc.)
+- Los precios están en USD
 - NO inventes características que no estén en los datos
 - Todo el contenido debe estar en español
 - NO incluyas hashtags, emojis, ni formato de redes sociales"""
@@ -149,7 +150,7 @@ REGLAS:
 - Tipo: {property_data.get('tipo_propiedad', '')}
 - Operación: {property_data.get('operacion', 'Venta')}
 - Precio: {precio_fmt}
-- Ubicación: {property_data.get('ciudad', '')}, {country['name']}
+- Ubicación: {property_data.get('ciudad', '')}, {state_name}
 - Recámaras: {property_data.get('recamaras', '')}
 - Baños: {property_data.get('banos', '')}
 - Superficie construida: {property_data.get('m2_construidos', '')} m²
@@ -192,11 +193,11 @@ def generate_voiceover_script_scenes(property_data: dict, video_type: str = "tou
 
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    from config import COUNTRIES, format_price
-    country_key = property_data.get("pais", "mexico")
-    country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
+    from config import STATES, format_price
+    country_key = property_data.get("pais", "")
+    state_name = STATES.get(country_key, property_data.get("pais", "USA"))
     precio = float(property_data.get("precio", 0))
-    precio_fmt = format_price(precio, country_key)
+    precio_fmt = format_price(precio)
 
     amenidades = property_data.get("amenidades", [])
     if isinstance(amenidades, str):
@@ -224,7 +225,7 @@ def generate_voiceover_script_scenes(property_data: dict, video_type: str = "tou
     )
 
     if lang == "en":
-        system_prompt = f"""You are a professional real estate voiceover scriptwriter for the {country['name']} market.
+        system_prompt = f"""You are a professional real estate voiceover scriptwriter for the {state_name} market.
 
 {tone_desc}
 
@@ -247,8 +248,8 @@ RULES:
 - Each scene text should be 15-30 words (natural spoken pace)
 - Total script should be 120-180 words (45-70 seconds when read aloud)
 - Write ONLY text to be read aloud — no stage directions, no brackets
-- IMPORTANT: Write prices in SPOKEN form, NOT abbreviated. Example: "seven million five hundred thousand pesos" instead of "MXN 7,500,000". Never use currency codes (MXN, USD, COP) — write as spoken words.
-- Prices in {country['currency']}
+- IMPORTANT: Write prices in SPOKEN form, NOT abbreviated. Example: "seven hundred fifty thousand dollars" instead of "$750,000". Never use currency codes — write as spoken words.
+- Prices in USD
 - DO NOT invent features not in the data
 - ALL content in English"""
 
@@ -256,7 +257,7 @@ RULES:
 - Type: {property_data.get('tipo_propiedad', '')}
 - Operation: {property_data.get('operacion', 'Sale')}
 - Price: {precio_fmt}
-- Location: {property_data.get('ciudad', '')}, {country['name']}
+- Location: {property_data.get('ciudad', '')}, {state_name}
 - Bedrooms: {property_data.get('recamaras', '')}
 - Bathrooms: {property_data.get('banos', '')}
 - Built area: {property_data.get('m2_construidos', '')} m²
@@ -267,7 +268,7 @@ RULES:
 - Agent: {property_data.get('agente_nombre', '')}
 - Phone: {property_data.get('agente_telefono', '')}"""
     else:
-        system_prompt = f"""Eres un guionista profesional de voiceover inmobiliario para el mercado de {country['name']}.
+        system_prompt = f"""Eres un guionista profesional de voiceover inmobiliario para el mercado de {state_name}.
 
 {tone_desc}
 
@@ -290,8 +291,8 @@ REGLAS:
 - Cada texto de escena debe tener 15-30 palabras (ritmo natural al hablar)
 - El guión total debe ser de 120-180 palabras (45-70 segundos al leerlo en voz alta)
 - Escribe SOLO texto que se va a leer en voz alta — sin direcciones de escena, sin corchetes
-- IMPORTANTE: Escribe los precios en forma HABLADA, NO abreviada. Ejemplo: "siete millones quinientos mil pesos" en lugar de "MXN 7,500,000". Nunca uses códigos de moneda (MXN, USD, COP) — escríbelos como palabras habladas.
-- Los precios están en {country['currency']}
+- IMPORTANTE: Escribe los precios en forma HABLADA, NO abreviada. Ejemplo: "setecientos cincuenta mil dólares" en lugar de "$750,000". Nunca uses códigos de moneda — escríbelos como palabras habladas (dólares, etc.)
+- Los precios están en USD
 - NO inventes características que no estén en los datos
 - Todo el contenido en español"""
 
@@ -299,7 +300,7 @@ REGLAS:
 - Tipo: {property_data.get('tipo_propiedad', '')}
 - Operación: {property_data.get('operacion', 'Venta')}
 - Precio: {precio_fmt}
-- Ubicación: {property_data.get('ciudad', '')}, {country['name']}
+- Ubicación: {property_data.get('ciudad', '')}, {state_name}
 - Recámaras: {property_data.get('recamaras', '')}
 - Baños: {property_data.get('banos', '')}
 - Superficie construida: {property_data.get('m2_construidos', '')} m²
@@ -385,7 +386,7 @@ REGLAS:
 
 def generate_voiceover_audio(script: str, voice: str = "femenina",
                              output_path: str = "voiceover.mp3",
-                             scenes: list[dict] | None = None) -> dict:
+                             scenes: Optional[list] = None) -> dict:
     """Generate voiceover audio using ElevenLabs TTS API with timestamps.
 
     When `scenes` is provided, uses the with-timestamps endpoint to get
