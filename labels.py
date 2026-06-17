@@ -1,5 +1,5 @@
 """
-Bilingual label system for ListaPro.
+Bilingual label system for Nova Realty AI.
 Centralizes all translatable strings for image generators, PDF, and carousel.
 """
 
@@ -7,40 +7,47 @@ LABELS = {
     # Stats (short labels for images)
     "recamaras": {"es": "Rec.", "en": "Bed."},
     "banos": {"es": "Baños", "en": "Bath."},
-    "m2_construidos": {"es": "Constr.", "en": "Built"},
+    "m2_construidos": {"es": "m²", "en": "Sq Ft"},
     "estacionamientos": {"es": "Estac.", "en": "Parking"},
 
     # Stats (full labels for PDF)
     "recamaras_full": {"es": "Recámaras", "en": "Bedrooms"},
     "banos_full": {"es": "Baños", "en": "Bathrooms"},
-    "m2_construidos_full": {"es": "m² Construidos", "en": "Built Area (m²)"},
-    "m2_terreno_full": {"es": "m² Terreno", "en": "Land Area (m²)"},
+    "m2_construidos_full": {"es": "m² Construidos", "en": "Square Feet"},
+    "m2_terreno_full": {"es": "m² Terreno", "en": "Lot Size (sq ft)"},
     "estacionamientos_full": {"es": "Estacionamientos", "en": "Parking Spots"},
     "pisos_full": {"es": "Pisos", "en": "Floors"},
     "direccion": {"es": "Dirección", "en": "Address"},
     "pisos_niveles": {"es": "Pisos / Niveles", "en": "Floors / Levels"},
-    "superficie_construida": {"es": "Superficie construida", "en": "Built area"},
-    "superficie_terreno": {"es": "Superficie terreno", "en": "Land area"},
+    "superficie_construida": {"es": "Superficie construida", "en": "Square footage"},
+    "superficie_terreno": {"es": "Superficie terreno", "en": "Lot size"},
 
-    # Operations
-    "Venta": {"es": "VENTA", "en": "FOR SALE"},
-    "Renta": {"es": "RENTA", "en": "FOR RENT"},
-    "Renta Temporal": {"es": "RENTA TEMPORAL", "en": "SHORT-TERM RENTAL"},
+    # New USA fields
+    "mls_number": {"es": "MLS #", "en": "MLS #"},
+    "zip_code": {"es": "Código ZIP", "en": "ZIP Code"},
+    "state": {"es": "Estado", "en": "State"},
+
+    # Operations (uppercase badges)
+    "For Sale": {"es": "EN VENTA", "en": "FOR SALE"},
+    "For Rent": {"es": "EN RENTA", "en": "FOR RENT"},
+    "Short-Term Rental": {"es": "RENTA TEMPORAL", "en": "SHORT-TERM RENTAL"},
 
     # Operations (lowercase for headings)
-    "venta_lower": {"es": "Venta", "en": "Sale"},
-    "renta_lower": {"es": "Renta", "en": "Rent"},
-    "renta_temporal_lower": {"es": "Renta Temporal", "en": "Short-term Rental"},
+    "for_sale_lower": {"es": "en venta", "en": "for sale"},
+    "for_rent_lower": {"es": "en renta", "en": "for rent"},
+    "short_term_lower": {"es": "renta temporal", "en": "short-term rental"},
 
-    # Property types
-    "Casa": {"es": "Casa", "en": "House"},
-    "Departamento": {"es": "Departamento", "en": "Apartment"},
-    "Terreno": {"es": "Terreno", "en": "Land"},
-    "Oficina": {"es": "Oficina", "en": "Office"},
-    "Local Comercial": {"es": "Local Comercial", "en": "Commercial Space"},
+    # Property types (US)
+    "Single Family Home": {"es": "Casa Unifamiliar", "en": "Single Family Home"},
+    "Condo/Apartment": {"es": "Condominio/Apartamento", "en": "Condo/Apartment"},
+    "Townhouse": {"es": "Townhouse", "en": "Townhouse"},
+    "Multi-Family": {"es": "Multi-Familiar", "en": "Multi-Family"},
+    "Land/Lot": {"es": "Terreno/Lote", "en": "Land/Lot"},
+    "Commercial": {"es": "Comercial", "en": "Commercial"},
+    "Office Space": {"es": "Oficina", "en": "Office Space"},
+    "Warehouse/Industrial": {"es": "Bodega/Industrial", "en": "Warehouse/Industrial"},
     "Penthouse": {"es": "Penthouse", "en": "Penthouse"},
-    "Bodega": {"es": "Bodega", "en": "Warehouse"},
-    "Estudio": {"es": "Estudio", "en": "Studio"},
+    "Studio": {"es": "Estudio", "en": "Studio"},
 
     # PDF section headers
     "amenidades": {"es": "Amenidades", "en": "Amenities"},
@@ -59,7 +66,12 @@ LABELS = {
     "slide_stats_title": {"es": "Características", "en": "Features"},
     "contacto": {"es": "Contacto", "en": "Contact"},
 
-    # Heading pattern: "{tipo} en {operacion}"
+    # Video CTA
+    "video_cta": {"es": "Agenda tu visita", "en": "Schedule a Tour"},
+    "video_scan": {"es": "ESCANEA PARA MÁS INFO", "en": "SCAN FOR MORE INFO"},
+    "video_watermark": {"es": "NOVA REALTY AI", "en": "NOVA REALTY AI"},
+
+    # Heading pattern: "{tipo} {connector} {operacion}"
     "heading_en": {"es": "en", "en": "for"},
 }
 
@@ -76,8 +88,11 @@ def get_operation(operation: str, lang: str = "es", uppercase: bool = True) -> s
     """Translate operation. uppercase=True for badges, False for headings."""
     if uppercase:
         return get_label(operation, lang)
-    # Map to lowercase variant
-    lower_map = {"Venta": "venta_lower", "Renta": "renta_lower", "Renta Temporal": "renta_temporal_lower"}
+    lower_map = {
+        "For Sale": "for_sale_lower",
+        "For Rent": "for_rent_lower",
+        "Short-Term Rental": "short_term_lower",
+    }
     key = lower_map.get(operation, operation)
     return get_label(key, lang)
 
