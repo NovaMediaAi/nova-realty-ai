@@ -1,5 +1,5 @@
 """
-Instagram Carousel Generator for ListaPro.
+Instagram Carousel Generator for Nova Realty AI.
 Generates N slides (1080x1350 each) + ZIP archive.
 
 Slide structure:

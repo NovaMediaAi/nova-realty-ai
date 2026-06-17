@@ -1,5 +1,5 @@
 """
-Instagram Post Image Generator for ListaPro.
+Instagram Post Image Generator for Nova Realty AI.
 Generates a 1080x1350 PNG with cover photo, property data overlay, and branding.
 """
 

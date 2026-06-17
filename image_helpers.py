@@ -1,5 +1,5 @@
 """
-Shared image generation helpers for ListaPro.
+Shared image generation helpers for Nova Realty AI.
 Used by instagram_generator, story_generator, and carousel_generator.
 """
 
@@ -125,7 +125,8 @@ def extract_stats(data: dict, lang: str = "es") -> list:
         stats.append((ban, get_label("banos", lang), "banos"))
     m2 = str(data.get("m2_construidos", "") or "")
     if m2 and m2 != "0":
-        stats.append((f"{m2}m\u00b2", get_label("m2_construidos", lang), "m2_construidos"))
+        suffix = " sq ft" if lang == "en" else "m\u00b2"
+        stats.append((f"{m2}{suffix}", get_label("m2_construidos", lang), "m2_construidos"))
     est = str(data.get("estacionamientos", "0") or "0")
     if est != "0":
         stats.append((est, get_label("estacionamientos", lang), "estacionamientos"))
@@ -134,8 +135,8 @@ def extract_stats(data: dict, lang: str = "es") -> list:
 
 def parse_colors(color_overrides: dict = None) -> tuple:
     """Parse color overrides, return (primary, accent) RGB tuples."""
-    primary = (26, 54, 93)
-    accent = (229, 62, 62)
+    primary = (10, 22, 40)    # #0A1628 Navy
+    accent = (201, 168, 76)   # #C9A84C Gold
     if color_overrides:
         if "color_primary" in color_overrides:
             primary = hex_to_rgb(color_overrides["color_primary"])

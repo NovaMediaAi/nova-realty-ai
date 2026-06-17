@@ -1,5 +1,5 @@
 """
-Instagram Story Image Generator for ListaPro.
+Instagram Story Image Generator for Nova Realty AI.
 Generates a 1080x1920 PNG with cover photo, property data overlay, and branding.
 """
 
