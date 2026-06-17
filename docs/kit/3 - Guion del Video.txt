@@ -1,0 +1,128 @@
+═══════════════════════════════════════════════════════════
+  NOVA REALTY AI — Guión para Video
+  Duración: 4–6 min | Sin cortes en el demo
+═══════════════════════════════════════════════════════════
+
+── INTRO (0:00 – 0:30) ───────────────────────────────────
+[Cámara en mano, aeropuerto de fondo]
+
+"Acabo de crear un sistema que le puedes vender a cualquier
+agente inmobiliario en Estados Unidos por más de cinco mil
+dólares.
+
+Y no es una exageración. Quédate hasta el final porque te
+lo voy a demostrar en vivo, sin cortes, desde cero.
+
+Estoy hablando de un sistema de inteligencia artificial que
+en menos de dos minutos genera todo el contenido de
+marketing para una propiedad — ficha técnica en PDF, post
+para Instagram, historia, carrusel, email, y un video
+completamente editado con narración, fotos, efectos y
+transiciones.
+
+Sin tocar CapCut. Sin tocar Canva. Absolutamente nada.
+
+Me llamo Ángel, y esto es Nova Realty AI."
+
+
+── CONTEXTO RÁPIDO (0:30 – 1:00) ────────────────────────
+[Mostrando la pantalla del formulario]
+
+"Todo funciona desde este formulario. El agente llena los
+datos de la propiedad y el sistema genera todo en automático.
+
+Funciona para el mercado de Estados Unidos — todos los
+estados, precios en dólares, número MLS, ZIP code.
+
+Y es bilingüe: inglés o español con un solo click.
+
+Vamos al demo ahora mismo."
+
+
+── DEMO EN VIVO (1:00 – 3:30) ───────────────────────────
+[Llenar formulario en tiempo real — NO CORTAR]
+
+"Aquí está el formulario. Creamos una propiedad de ejemplo.
+
+Tipo: Single Family Home. Operación: For Sale.
+Estado: Florida. Ciudad: Winter Garden. ZIP: 34787.
+
+Precio: quinientos mil dólares. Tres recámaras, dos baños,
+dos mil trescientos square feet. Dos estacionamientos.
+
+Amenidades: piscina, gimnasio, jardín, aire acondicionado.
+
+Aquí el sistema tiene dos opciones de video: reel rápido, o
+tour narrado con voiceover. Vamos con el tour narrado.
+Género femenino, tono de lujo.
+
+[Subir fotos]
+
+Subo las fotos — fachada, sala, cocina, recámara, jardín.
+
+Y aquí algo que me encanta: el sistema genera un guion por
+escenas antes de producir el video. Lo puedo revisar,
+editar, y asegurarme de que quede perfecto.
+
+[Dar click en Generar]
+
+Listo. En menos de dos minutos tenemos todo."
+
+
+── RESULTADOS (3:30 – 4:45) ─────────────────────────────
+[Mostrar cada pieza una por una]
+
+"¿Ya terminó? Vean esto.
+
+PDF profesional — ficha técnica completa, todas las fotos,
+precio en USD, MLS, descripción con IA, datos del agente.
+
+Post de Instagram — precio, recámaras, baños, QR de
+WhatsApp. Desde aquí mismo lo publico directo a Instagram.
+
+Historia — lista para publicar con un click.
+
+Carrusel — portada, slides de amenidades, slide de contacto.
+Los reordeno como quiero y los publico directo.
+
+Email — correo profesional listo para un blast.
+
+Y lo más importante — el video.
+
+[Reproducir video]
+
+Voiceover profesional, fotos, efectos, transiciones, música.
+Todo automático. Sin tocar nada.
+
+Y esto me costó exactamente cero dólares adicionales.
+Todo corre en mi computadora."
+
+
+── CIERRE + CTA (4:45 – 5:30) ───────────────────────────
+[De frente a la cámara]
+
+"¿Cuánto le cobrarías a una inmobiliaria por esto?
+Cinco mil dólares es conservador.
+
+Y cualquier persona lo puede instalar. No necesitas saber
+programar. Solo necesitas Claude Code — gratis — y tres
+pasos. El enlace y la guía están abajo en la descripción.
+
+Si esto te interesa, dale like y suscríbete porque voy a
+subir más sistemas como este.
+
+Nos vemos."
+
+
+── NOTAS DE GRABACIÓN ────────────────────────────────────
+
+• Demo SIN cortes — los errores son reales, déjalos
+• Graba pantalla con OBS o QuickTime en paralelo
+• Thumbnail: "Generé $5,000 en contenido con IA"
+• Descripción: github.com/NovaMediaAi/nova-realty-ai
+
+Hashtags:
+#IA #RealEstateUSA #ClaudeCode #AIMarketing
+#AutomatizacionIA #InmobiliariaDigital #NovaRealtyAI
+
+═══════════════════════════════════════════════════════════

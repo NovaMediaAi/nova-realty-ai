@@ -1,0 +1,24 @@
+═══════════════════════════════════════════════════════════
+  NOVA REALTY AI — Prompt de Instalación para Claude Code
+═══════════════════════════════════════════════════════════
+
+INSTRUCCIONES:
+1. Abre Claude Code en tu computadora
+   → Descárgalo gratis en: claude.ai/download
+
+2. Copia TODO el texto de abajo y pégalo en Claude Code:
+
+───────────────────────────────────────────────────────────
+
+Clona el repositorio https://github.com/NovaMediaAi/nova-realty-ai.git, instala todas las dependencias de Python (en un entorno virtual .venv) y de Node.js (en la carpeta video/), y crea el archivo .env a partir de .env.example. Cuando termines, guíame paso a paso para configurar cada API key necesaria, explicando para qué sirve cada una y cómo obtenerla. Al final, inicia el servidor automáticamente.
+
+───────────────────────────────────────────────────────────
+
+3. Claude hace todo solo. Solo sigue sus instrucciones.
+
+4. Cuando termine, abre: http://localhost:8000
+
+═══════════════════════════════════════════════════════════
+  Repositorio: github.com/NovaMediaAi/nova-realty-ai
+  Soporte:     hello@nova-media.ai
+═══════════════════════════════════════════════════════════

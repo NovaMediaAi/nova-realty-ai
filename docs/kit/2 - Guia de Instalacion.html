@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nova Realty AI — Guía de Instalación</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:#fff; color:#1a202c; }
+
+  .page { max-width:700px; margin:0 auto; padding:48px 40px; }
+
+  /* Header */
+  .header { text-align:center; padding-bottom:32px; border-bottom:2px solid #C9A84C; margin-bottom:32px; }
+  .brand { font-family:'Playfair Display',serif; font-size:32px; color:#0A1628; }
+  .brand span { color:#C9A84C; }
+  .tagline { font-size:13px; color:#64748b; margin-top:6px; letter-spacing:.5px; text-transform:uppercase; }
+  .subtitle { font-size:14px; color:#64748b; margin-top:12px; line-height:1.6; }
+
+  /* Section */
+  h2 { font-size:17px; font-weight:700; color:#0A1628; margin:28px 0 12px; display:flex; align-items:center; gap:8px; }
+  h2 .num { background:#C9A84C; color:#fff; width:24px; height:24px; border-radius:50%; font-size:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+  p { font-size:14px; line-height:1.7; color:#374151; margin-bottom:10px; }
+  ul, ol { padding-left:20px; margin-bottom:10px; }
+  li { font-size:14px; line-height:1.7; color:#374151; margin-bottom:4px; }
+
+  /* Prompt box */
+  .prompt-box { background:#0A1628; border-radius:10px; padding:16px 20px; margin:12px 0; position:relative; }
+  .prompt-box pre { color:#C9A84C; font-family:monospace; font-size:12.5px; white-space:pre-wrap; word-break:break-word; line-height:1.6; }
+  .prompt-label { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:#64748b; margin-bottom:6px; }
+
+  /* Table */
+  table { width:100%; border-collapse:collapse; margin:12px 0 20px; font-size:13px; }
+  th { background:#0A1628; color:#C9A84C; padding:8px 12px; text-align:left; font-weight:600; }
+  td { padding:8px 12px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+  td:first-child { font-weight:600; color:#0A1628; white-space:nowrap; }
+  tr:last-child td { border-bottom:none; }
+  .badge { display:inline-block; font-size:10px; padding:2px 7px; border-radius:20px; font-weight:600; }
+  .req { background:#fef3c7; color:#92400e; }
+  .opt { background:#e0f2fe; color:#0369a1; }
+
+  /* Warning / tip */
+  .tip { background:#f0fdf4; border-left:3px solid #22c55e; padding:10px 14px; border-radius:4px; font-size:13px; margin:12px 0; }
+  .warn { background:#fff7ed; border-left:3px solid #f97316; padding:10px 14px; border-radius:4px; font-size:13px; margin:12px 0; }
+
+  /* Step cards */
+  .step { border:1px solid #e2e8f0; border-radius:10px; padding:14px 18px; margin-bottom:10px; }
+  .step-title { font-weight:600; font-size:14px; color:#0A1628; margin-bottom:6px; }
+
+  /* Footer */
+  .footer { text-align:center; margin-top:40px; padding-top:20px; border-top:1px solid #e2e8f0; font-size:12px; color:#94a3b8; }
+  .footer strong { color:#C9A84C; }
+
+  /* Print */
+  @media print {
+    body { font-size:13px; }
+    .page { padding:24px; }
+    .prompt-box { break-inside:avoid; }
+    .step { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">Nova Realty <span>AI</span></div>
+    <div class="tagline">AI-Powered Real Estate Marketing Platform</div>
+    <div class="subtitle">Genera en menos de 2 minutos: PDF profesional · Post de Instagram · Historia · Carrusel · Email · Video Reel con voiceover</div>
+  </div>
+
+  <!-- Requisitos previos -->
+  <h2><span class="num">0</span>Antes de empezar — Instala estos 2 programas (solo una vez)</h2>
+  <div class="step">
+    <div class="step-title">1. Node.js</div>
+    <p>Descárgalo de <strong>nodejs.org</strong> → botón verde "LTS" → instala normalmente.</p>
+  </div>
+  <div class="step">
+    <div class="step-title">2. Python 3.10+</div>
+    <p>Descárgalo de <strong>python.org/downloads</strong> → instala.<br>
+    <em>Windows:</em> marca <strong>"Add Python to PATH"</strong> antes de dar click en Install.</p>
+  </div>
+  <div class="tip"><strong>¿Ya los tienes?</strong> Verifica con <code>node -v</code> y <code>python --version</code> en tu terminal.</div>
+
+  <!-- Paso 1 -->
+  <h2><span class="num">1</span>Abre Claude Code</h2>
+  <p>Si no lo tienes, descárgalo de <strong>claude.ai/download</strong> e instálalo.</p>
+  <p>Una vez abierto, navega a la carpeta donde quieres instalar el proyecto.</p>
+
+  <!-- Paso 2 -->
+  <h2><span class="num">2</span>Pega este prompt en Claude Code</h2>
+  <p>Copia el texto completo de abajo y pégalo en Claude Code. Él va a hacer todo automáticamente:</p>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Copia esto → pégalo en Claude Code</div>
+    <pre>Clona el repositorio https://github.com/NovaMediaAi/nova-realty-ai.git, instala todas las dependencias de Python (en un entorno virtual .venv) y de Node.js (en la carpeta video/), y crea el archivo .env a partir de .env.example. Cuando termines, guíame paso a paso para configurar cada API key necesaria, explicando para qué sirve cada una y cómo obtenerla. Al final, inicia el servidor automáticamente.</pre>
+  </div>
+
+  <div class="tip"><strong>Claude Code va a hacer todo solo.</strong> Solo sigue sus instrucciones cuando te pida las API keys.</div>
+
+  <!-- Paso 3 -->
+  <h2><span class="num">3</span>Configura tus API Keys</h2>
+  <p>Claude te pedirá las keys una por una. Aquí está la tabla completa:</p>
+
+  <table>
+    <tr>
+      <th>Servicio</th>
+      <th>Para qué sirve</th>
+      <th>Dónde obtenerla</th>
+      <th>Estado</th>
+    </tr>
+    <tr>
+      <td>OpenAI</td>
+      <td>Genera todos los textos de marketing con IA</td>
+      <td>platform.openai.com/api-keys</td>
+      <td><span class="badge req">Obligatoria</span></td>
+    </tr>
+    <tr>
+      <td>ElevenLabs</td>
+      <td>Voz del locutor en el video + música de fondo</td>
+      <td>elevenlabs.io → Profile → API Keys</td>
+      <td><span class="badge opt">Opcional</span></td>
+    </tr>
+    <tr>
+      <td>ImgBB</td>
+      <td>Sube fotos para el renderizado del video</td>
+      <td>api.imgbb.com</td>
+      <td><span class="badge opt">Opcional</span></td>
+    </tr>
+    <tr>
+      <td>Upload Post</td>
+      <td>Publica directamente a Instagram</td>
+      <td>upload-post.com → API</td>
+      <td><span class="badge opt">Opcional</span></td>
+    </tr>
+  </table>
+
+  <div class="warn"><strong>Sin las keys opcionales</strong> el PDF, post, historia, carrusel y email funcionan perfectamente. Solo el video y la publicación a Instagram necesitan las extras.</div>
+
+  <!-- Paso 4 -->
+  <h2><span class="num">4</span>Inicia Nova Realty AI</h2>
+  <p>Dile a Claude Code:</p>
+  <div class="prompt-box">
+    <pre>Inicia el servidor de Nova Realty AI</pre>
+  </div>
+  <p>O manualmente en tu terminal:</p>
+  <div class="prompt-box">
+    <pre>source .venv/bin/activate
+python main.py</pre>
+  </div>
+
+  <!-- Paso 5 -->
+  <h2><span class="num">5</span>Abre tu navegador</h2>
+  <p>Ve a <strong>http://localhost:8000</strong> — ya puedes generar tu primer listado.</p>
+
+  <!-- Problemas comunes -->
+  <h2><span class="num">!</span>Problemas comunes</h2>
+  <div class="step">
+    <div class="step-title">"Error al generar textos"</div>
+    <p>Tu key de OpenAI no es válida o no tiene crédito. Verifica en platform.openai.com → Billing.</p>
+  </div>
+  <div class="step">
+    <div class="step-title">"El video no se genera"</div>
+    <p>Node.js no está instalado correctamente, o falta la key de ImgBB. Dile a Claude: <em>"Revisa por qué no se genera el video."</em></p>
+  </div>
+  <div class="step">
+    <div class="step-title">"El servidor no inicia"</div>
+    <p>Dile a Claude Code: <em>"Revisa por qué no inicia el servidor de Nova Realty AI y arréglalo."</em></p>
+  </div>
+  <div class="step">
+    <div class="step-title">Cualquier otro error</div>
+    <p>Copia el error completo y díselo a Claude Code. Él lo resuelve automáticamente.</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <strong>Nova Realty AI</strong> · hello@nova-media.ai · github.com/NovaMediaAi/nova-realty-ai
+  </div>
+
+</div>
+</body>
+</html>
