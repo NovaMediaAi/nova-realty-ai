@@ -340,6 +340,9 @@ def _render_gallery_page(pdf, photos: list, property_data: dict, grid_uniform: b
         (get_label("precio_label", lang), precio_fmt),
         (get_label("ubicacion", lang), location),
     ]
+    mls = property_data.get("mls_number", "")
+    if mls:
+        specs.append(("MLS #", mls))
     direccion = property_data.get("direccion", "")
     if direccion:
         specs.append((get_label("direccion", lang), direccion))
