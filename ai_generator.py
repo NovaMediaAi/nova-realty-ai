@@ -7,8 +7,8 @@ def generate_listing_copy(property_data: dict) -> dict:
     """Generate real estate listing copy using OpenAI API."""
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    country_key = property_data.get("pais", "")
-    state_name = STATES.get(country_key, country_key or "USA")
+    state_key = property_data.get("pais", "")
+    state_name = STATES.get(state_key, state_key)
     precio = float(property_data.get("precio", 0))
     precio_fmt = format_price(precio)
     lang = property_data.get("idioma", "es")
@@ -19,42 +19,47 @@ def generate_listing_copy(property_data: dict) -> dict:
     otras = property_data.get("otras_amenidades", "")
     if otras:
         amenidades.extend([a.strip() for a in otras.split(",") if a.strip()])
-    amenidades_str = ", ".join(amenidades) if amenidades else ("No especificadas" if lang == "es" else "Not specified")
+    amenidades_str = ", ".join(amenidades) if amenidades else ("Not specified" if lang == "en" else "No especificadas")
+
+    mls = property_data.get("mls_number", "")
+    zip_code = property_data.get("zip_code", "")
+    city = property_data.get("ciudad", "")
+    location = f"{city}, {state_name}" + (f" {zip_code}" if zip_code else "")
 
     if lang == "en":
-        system_prompt = f"""You are a professional real estate copywriter with extensive experience in the {state_name} property market. Your job is to create attractive, professional listing copy in English.
+        system_prompt = """You are a professional real estate copywriter specializing in the US market. Create attractive, professional listing copy in English.
 
 RULES:
-- Use appropriate real estate vocabulary for the {state_name} market
-- Prices are expressed in USD
-- Be professional yet approachable
-- Highlight the most attractive features of the property
-- DO NOT make up information not provided in the data
-- If any data is unavailable, simply don't mention it
-- ALL content must be written in English
+- Use US real estate vocabulary: sq ft (not m²), bedrooms/bathrooms, HOA, MLS, price per sq ft
+- All prices in USD
+- Professional yet approachable tone
+- Highlight the most attractive features
+- Do NOT invent data not provided
+- ALL content in English
 
 Respond ONLY with valid JSON (no markdown, no backticks) with these 5 keys:
 
-1. "descripcion_pdf": Professional description of 2-3 paragraphs for a real estate brochure. Elegant and descriptive tone. Mention location, main features, and notable amenities.
+1. "descripcion_pdf": Professional 2-3 paragraph description for a real estate brochure. Elegant and descriptive. Mention location, main features, notable amenities.
 
-2. "copy_instagram": Instagram/Facebook post in English. Include relevant emojis (don't overdo it), hashtags at the end (5-8 hashtags including the city), and a call to action. Maximum 250 words.
+2. "copy_instagram": Instagram/Facebook post in English. Include relevant emojis (don't overdo it), hashtags at the end (5-8 including the city and state), and a call to action. Max 250 words.
 
-3. "mensaje_whatsapp": Short WhatsApp message (3-4 lines max) in English. Include price, location, and one attractive feature. Minimal emojis. Direct and engaging.
+3. "mensaje_whatsapp": Short WhatsApp message (3-4 lines max) in English. Include price, location, one attractive feature. Minimal emojis. Direct and engaging.
 
-4. "frase_gancho": A short, impactful phrase (maximum 8 words) that captures the essence of the property. Examples: "Your dream home awaits you", "Luxury and comfort in every detail", "Live where elegance resides". NO emojis. Must be emotional and aspirational.
+4. "frase_gancho": Short impactful phrase (max 8 words) capturing the property essence. Examples: "Your dream home awaits", "Luxury living redefined", "Where elegance meets comfort". NO emojis. Emotional and aspirational.
 
-5. "copy_email": Professional email body for a property blast email. Write a compelling subject line as the FIRST line (prefixed with "Subject: "), then a blank line, then the email body. The body should be 3-4 short paragraphs: opening hook, key features/highlights, call to action. Professional but warm tone. Do NOT include HTML tags. Do NOT include the agent name/phone (those are added automatically)."""
+5. "copy_email": Professional email body for a property blast. Write a compelling subject line as the FIRST line (prefix "Subject: "), blank line, then 3-4 short paragraphs: opening hook, key features, call to action. Professional but warm. NO HTML tags. NO agent name/phone."""
 
         user_message = f"""PROPERTY DATA:
 - Type: {property_data.get('tipo_propiedad', 'Not specified')}
-- Operation: {property_data.get('operacion', 'Sale')}
+- Operation: {property_data.get('operacion', 'For Sale')}
 - Price: {precio_fmt}
-- Location: {property_data.get('ciudad', '')}, {state_name}
+- Location: {location}
 - Address: {property_data.get('direccion', 'Not published')}
+- MLS #: {mls if mls else 'N/A'}
 - Bedrooms: {property_data.get('recamaras', 'Not specified')}
 - Bathrooms: {property_data.get('banos', 'Not specified')}
-- Built area: {property_data.get('m2_construidos', 'Not specified')} m²
-- Land area: {property_data.get('m2_terreno', 'Not specified')} m²
+- Square Feet: {property_data.get('m2_construidos', 'Not specified')} sq ft
+- Lot Size: {property_data.get('m2_terreno', 'Not specified')} sq ft
 - Parking: {property_data.get('estacionamientos', 'Not specified')}
 - Floors: {property_data.get('pisos', 'Not specified')}
 - Amenities: {amenidades_str}
@@ -63,38 +68,39 @@ Respond ONLY with valid JSON (no markdown, no backticks) with these 5 keys:
 - Phone: {property_data.get('agente_telefono', '')}"""
 
     else:
-        system_prompt = f"""Eres un copywriter profesional de bienes raíces con amplia experiencia en el mercado inmobiliario de {state_name}. Tu trabajo es crear textos atractivos y profesionales para listados de propiedades.
+        system_prompt = """Eres un copywriter profesional de bienes raíces especializado en el mercado de Estados Unidos. Crea textos atractivos y profesionales para listados de propiedades en inglés y español.
 
 REGLAS:
-- Usa vocabulario inmobiliario apropiado para {state_name}
+- Usa vocabulario inmobiliario apropiado para el mercado de USA
 - Los precios se expresan en USD
 - Sé formal pero accesible
-- Destaca las características más atractivas de la propiedad
+- Destaca las características más atractivas
 - NO inventes datos que no estén en la información proporcionada
-- Si algún dato no está disponible, simplemente no lo menciones
+- Contenido en español, pero con referencias geográficas de USA (ciudad, estado)
 
 Responde ÚNICAMENTE con un JSON válido (sin markdown, sin backticks) con estas 5 claves:
 
-1. "descripcion_pdf": Descripción profesional de 2-3 párrafos para un folleto inmobiliario. Tono elegante y descriptivo. Menciona ubicación, características principales y amenidades destacadas.
+1. "descripcion_pdf": Descripción profesional de 2-3 párrafos para un folleto inmobiliario. Tono elegante. Menciona ubicación, características principales y amenidades.
 
-2. "copy_instagram": Post para Instagram/Facebook. Incluye emojis relevantes (sin exagerar), hashtags al final (5-8 hashtags incluyendo la ciudad), y un llamado a la acción. Máximo 250 palabras.
+2. "copy_instagram": Post para Instagram/Facebook. Emojis relevantes (sin exagerar), hashtags al final (5-8 incluyendo ciudad y estado), llamado a la acción. Máximo 250 palabras.
 
-3. "mensaje_whatsapp": Mensaje corto para WhatsApp (3-4 líneas máximo). Incluye precio, ubicación y un dato atractivo. Con emojis mínimos. Debe ser directo y generar interés.
+3. "mensaje_whatsapp": Mensaje corto para WhatsApp (3-4 líneas). Incluye precio, ubicación, dato atractivo. Emojis mínimos. Directo.
 
-4. "frase_gancho": Una frase corta e impactante (máximo 8 palabras) que capture la esencia de la propiedad. Ejemplos: "Tu hogar soñado te espera", "Lujo y confort en cada detalle", "Vive donde la elegancia habita". NO uses emojis. Debe ser emotiva y aspiracional.
+4. "frase_gancho": Frase corta e impactante (máximo 8 palabras). Ejemplos: "Tu hogar soñado te espera", "Lujo y confort en cada detalle". Sin emojis. Emotiva y aspiracional.
 
-5. "copy_email": Cuerpo profesional de email para un blast inmobiliario. Escribe un asunto atractivo en la PRIMERA línea (con prefijo "Asunto: "), luego una línea en blanco, y después el cuerpo del email. El cuerpo debe tener 3-4 párrafos cortos: apertura atractiva, características/highlights, llamado a la acción. Tono profesional pero cercano. NO incluyas etiquetas HTML. NO incluyas nombre/teléfono del agente (se agregan automáticamente)."""
+5. "copy_email": Email profesional para blast inmobiliario. Asunto atractivo en la PRIMERA línea (prefijo "Asunto: "), línea en blanco, después 3-4 párrafos cortos. Sin etiquetas HTML. Sin nombre/teléfono del agente."""
 
         user_message = f"""DATOS DE LA PROPIEDAD:
 - Tipo: {property_data.get('tipo_propiedad', 'No especificado')}
-- Operación: {property_data.get('operacion', 'Venta')}
+- Operación: {property_data.get('operacion', 'For Sale')}
 - Precio: {precio_fmt}
-- Ubicación: {property_data.get('ciudad', '')}, {state_name}
+- Ubicación: {location}
 - Dirección: {property_data.get('direccion', 'No publicada')}
+- MLS #: {mls if mls else 'N/A'}
 - Recámaras: {property_data.get('recamaras', 'No especificado')}
 - Baños: {property_data.get('banos', 'No especificado')}
-- Superficie construida: {property_data.get('m2_construidos', 'No especificado')} m²
-- Superficie terreno: {property_data.get('m2_terreno', 'No especificado')} m²
+- Superficie: {property_data.get('m2_construidos', 'No especificado')} sq ft
+- Terreno: {property_data.get('m2_terreno', 'No especificado')} sq ft
 - Estacionamientos: {property_data.get('estacionamientos', 'No especificado')}
 - Pisos: {property_data.get('pisos', 'No especificado')}
 - Amenidades: {amenidades_str}
@@ -115,11 +121,9 @@ Responde ÚNICAMENTE con un JSON válido (sin markdown, sin backticks) con estas
 
     raw = response.choices[0].message.content.strip()
 
-    # Try to parse as JSON
     try:
         result = json.loads(raw)
     except json.JSONDecodeError:
-        # Try extracting JSON from markdown code block
         if "```" in raw:
             json_str = raw.split("```")[1]
             if json_str.startswith("json"):
