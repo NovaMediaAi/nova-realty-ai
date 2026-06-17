@@ -44,7 +44,7 @@ async def _run_video_task(job_id: str, property_data: dict, photo_paths: list[st
                           video_type: str = "reel"):
     """Background task: generate music via Suno, then render video with Remotion."""
     job_dir = GENERATED_DIR / job_id
-    video_filename = f"listapro_{job_id}.mp4"
+    video_filename = f"nova_{job_id}.mp4"
     output_path = str(job_dir / video_filename)
     props_path = str(job_dir / "props.json")
 
@@ -422,7 +422,7 @@ async def generar_listado(
     sb.save_listing(job_id, property_data, ai_copy, photo_storage_paths)
 
     # Generate PDF
-    pdf_filename = f"listapro_{job_id}.pdf"
+    pdf_filename = f"nova_{job_id}.pdf"
     pdf_path = job_dir / pdf_filename
 
     settings = load_settings()
