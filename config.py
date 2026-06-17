@@ -21,106 +21,57 @@ SUPABASE_URL = os.getenv("SUPABASE_URL", "")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
 STORAGE_MODE = os.getenv("STORAGE_MODE", "local")  # "local" or "supabase"
 
-COUNTRIES = {
-    "mexico": {
-        "name": "México",
-        "currency": "MXN",
-        "symbol": "$",
-        "locale_example": "Colonia, Ciudad, Estado",
-    },
-    "colombia": {
-        "name": "Colombia",
-        "currency": "COP",
-        "symbol": "$",
-        "locale_example": "Barrio, Ciudad, Departamento",
-    },
-    "argentina": {
-        "name": "Argentina",
-        "currency": "ARS",
-        "symbol": "$",
-        "locale_example": "Barrio, Ciudad, Provincia",
-    },
-    "chile": {
-        "name": "Chile",
-        "currency": "CLP",
-        "symbol": "$",
-        "locale_example": "Comuna, Ciudad, Región",
-    },
-    "peru": {
-        "name": "Perú",
-        "currency": "PEN",
-        "symbol": "S/",
-        "locale_example": "Distrito, Ciudad, Departamento",
-    },
-    "ecuador": {
-        "name": "Ecuador",
-        "currency": "USD",
-        "symbol": "$",
-        "locale_example": "Sector, Ciudad, Provincia",
-    },
-    "uruguay": {
-        "name": "Uruguay",
-        "currency": "UYU",
-        "symbol": "$",
-        "locale_example": "Barrio, Ciudad, Departamento",
-    },
-    "republica_dominicana": {
-        "name": "Rep. Dominicana",
-        "currency": "DOP",
-        "symbol": "RD$",
-        "locale_example": "Sector, Ciudad, Provincia",
-    },
-    "costa_rica": {
-        "name": "Costa Rica",
-        "currency": "CRC",
-        "symbol": "₡",
-        "locale_example": "Barrio, Ciudad, Provincia",
-    },
-    "panama": {
-        "name": "Panamá",
-        "currency": "USD",
-        "symbol": "$",
-        "locale_example": "Barrio, Ciudad, Provincia",
-    },
+STATES = {
+    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas",
+    "CA": "California", "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware",
+    "FL": "Florida", "GA": "Georgia", "HI": "Hawaii", "ID": "Idaho",
+    "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
+    "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland",
+    "MA": "Massachusetts", "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi",
+    "MO": "Missouri", "MT": "Montana", "NE": "Nebraska", "NV": "Nevada",
+    "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", "NY": "New York",
+    "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
+    "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina",
+    "SD": "South Dakota", "TN": "Tennessee", "TX": "Texas", "UT": "Utah",
+    "VT": "Vermont", "VA": "Virginia", "WA": "Washington", "WV": "West Virginia",
+    "WI": "Wisconsin", "WY": "Wyoming", "PR": "Puerto Rico",
 }
 
 PROPERTY_TYPES = [
-    "Casa",
-    "Departamento",
-    "Terreno",
-    "Oficina",
-    "Local Comercial",
+    "Single Family Home",
+    "Condo/Apartment",
+    "Townhouse",
+    "Multi-Family",
+    "Land/Lot",
+    "Commercial",
+    "Office Space",
+    "Warehouse/Industrial",
     "Penthouse",
-    "Bodega",
-    "Estudio",
+    "Studio",
 ]
 
-OPERATIONS = ["Venta", "Renta", "Renta Temporal"]
+OPERATIONS = ["For Sale", "For Rent", "Short-Term Rental"]
 
 AMENITIES = [
-    "Estacionamiento",
-    "Alberca",
-    "Jardín",
-    "Terraza",
-    "Gimnasio",
-    "Seguridad 24h",
-    "Elevador",
-    "Cuarto de servicio",
-    "Bodega",
-    "Roof Garden",
-    "Área de juegos",
+    "Garage",
+    "Swimming Pool",
+    "Backyard/Yard",
+    "Deck/Patio",
+    "Gym/Fitness Center",
+    "24/7 Security",
+    "Elevator",
+    "In-unit Laundry",
+    "HOA",
+    "Basement",
+    "Rooftop",
     "Pet Friendly",
-    "Amueblado",
-    "Aire acondicionado",
-    "Calefacción",
-    "Cocina integral",
+    "Furnished",
+    "Central A/C",
+    "Fireplace",
+    "Smart Home",
 ]
 
 
-def format_price(price: float, country_key: str) -> str:
-    country = COUNTRIES.get(country_key, COUNTRIES["mexico"])
-    symbol = country["symbol"]
-    currency = country["currency"]
-    if currency in ("USD", "CRC"):
-        return f"{symbol}{price:,.2f} {currency}"
-    return f"{symbol}{price:,.0f} {currency}"
+def format_price(price: float, state_key: str = "") -> str:
+    """Format price in USD."""
+    return f"${price:,.0f} USD"

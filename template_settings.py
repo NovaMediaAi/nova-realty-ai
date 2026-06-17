@@ -10,18 +10,18 @@ ASSETS_DIR = GENERATED_DIR / "assets"
 
 DEFAULT_SETTINGS = {
     "pdf": {
-        "color_primary": "#1a365d",
-        "color_accent": "#e53e3e",
+        "color_primary": "#0A1628",
+        "color_accent": "#C9A84C",
         "pdf_template": "clasico",
     },
     "video": {
-        "color_background": "#0f2137",
-        "color_accent": "#c9a84c",
-        "color_cta": "#c8102e",
+        "color_background": "#0A1628",
+        "color_accent": "#C9A84C",
+        "color_cta": "#C9A84C",
         "video_style": "elegante",
     },
     "music": {
-        "style": "elegant ambient piano cinematic soft luxury real estate",
+        "style": "elegant ambient piano cinematic luxury American real estate premium",
         "negative_tags": "vocals, singing, heavy metal, aggressive, loud",
     },
     "branding": {
