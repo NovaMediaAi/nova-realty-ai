@@ -1,4 +1,4 @@
-"""Supabase client abstraction for ListaPro dual-mode storage."""
+"""Supabase client abstraction for Nova Realty AI dual-mode storage."""
 import json
 from pathlib import Path
 from typing import Optional, List

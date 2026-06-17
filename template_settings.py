@@ -1,4 +1,4 @@
-"""Template settings module for ListaPro brand customization."""
+"""Template settings module for Nova Realty AI brand customization."""
 import json
 from pathlib import Path
 

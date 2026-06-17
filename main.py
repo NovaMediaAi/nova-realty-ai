@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).parent
 GENERATED_DIR = BASE_DIR / "generated"
 GENERATED_DIR.mkdir(exist_ok=True)
 
-app = FastAPI(title="ListaPro")
+app = FastAPI(title="Nova Realty AI")
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 app.mount("/generated", StaticFiles(directory=str(GENERATED_DIR)), name="generated")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))

@@ -1,5 +1,5 @@
 """
-Voiceover Generator for ListaPro.
+Voiceover Generator for Nova Realty AI.
 Integrates with ElevenLabs API for text-to-speech generation.
 """
 

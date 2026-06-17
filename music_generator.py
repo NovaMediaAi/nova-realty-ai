@@ -31,7 +31,7 @@ async def generate_music(
     body = {
         "customMode": True,
         "instrumental": True,
-        "title": "ListaPro Background",
+        "title": "Nova Realty AI Background",
         "style": style,
         "model": "V4_5",
         "negativeTags": negative_tags,
