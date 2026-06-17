@@ -20,10 +20,10 @@ export const TOTAL_DURATION = 600;
 // ─── Style Presets ───────────────────────────────────────────────
 export const STYLE_PRESETS: Record<VideoStyle, StylePreset> = {
   elegante: {
-    bgColor: "#0f2137",
-    bgSecondary: "#1a365d",
-    accentColor: "#c9a84c",
-    ctaColor: "#c8102e",
+    bgColor: "#0A1628",
+    bgSecondary: "#1a2d4a",
+    accentColor: "#C9A84C",
+    ctaColor: "#C9A84C",
     textColor: "#ffffff",
     textLight: "rgba(255,255,255,0.7)",
     fontHeading: "'Playfair Display', Georgia, serif",
